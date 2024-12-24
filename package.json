@@ -1,0 +1,25 @@
+{
+  "name": "letscode-evaluator-service",
+  "version": "1.0.0",
+  "description": "\"Evaluator Service for letsocde\"",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "npx nodemon dist/index.js",
+    "dev": "npx concurrently --kill-others \"npm run watch\" \"npm run start\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^9.1.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "typescript": "^5.7.2"
+  }
+}
