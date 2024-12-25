@@ -4,6 +4,7 @@
   "description": "\"Evaluator Service for letsocde\"",
   "main": "index.js",
   "scripts": {
+    "prebuild": "npx eslint . --ignore-pattern \"dist/*\" --fix",
     "build": "npx tsc",
     "watch": "tsc -w",
     "prestart": "npm run build",
