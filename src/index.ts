@@ -1,13 +1,18 @@
-const express = require('express');
-const app = express();
-const { PORT } = require('./config/server.config');
+import express, { Express, Request, Response} from 'express';
+import serverConfig from './config/server.config';
+import apiRouter from './routes';
+const app: Express = express();
 
-// app.get('/', (_,res)=>{
-//     res.json({message : "Request Received!"});
-// })
+app.get('/', (_:Request, res:Response)=>{
+    res.json({
+        message : "Server is working fine!"
+    });
+});
 
-app.listen(PORT, ()=>{
-    let res : String = "You are getting watched in server!";
-    console.log(`Seriver is Working on Port ${PORT}`);
+app.use('/api', apiRouter);
+
+app.listen(serverConfig.PORT, ()=>{
+    const res : string = "You are getting watched in server!";
+    console.log(`Seriver is Working on Port ${serverConfig.PORT}`);
     console.log(res);
-})
+});
