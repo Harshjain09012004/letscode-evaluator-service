@@ -10,8 +10,12 @@ class SampleJob implements IJob{
         this.payload = payload;
     }
 
-    handle():void{
+    handle(job?: Job):void{
         console.log("Job Handler");
+        console.log(this.payload);
+        if(job){
+            console.log(job.name, job.id, job.data);
+        }
     }
 
     failed(job?: Job):void{

@@ -1,6 +1,8 @@
 import express, { Express, Request, Response} from 'express';
 import serverConfig from './config/server.config';
 import apiRouter from './routes';
+import SampleQueueProducer from './producers/sampleQueue.producer';
+import SampleWorker from './workers/sample.worker';
 const app: Express = express();
 
 app.get('/', (_:Request, res:Response)=>{
@@ -12,7 +14,13 @@ app.get('/', (_:Request, res:Response)=>{
 app.use('/api', apiRouter);
 
 app.listen(serverConfig.PORT, ()=>{
-    const res : string = "You are getting watched in server!";
     console.log(`Seriver is Working on Port ${serverConfig.PORT}`);
-    console.log(res);
+    
+    SampleWorker('SampleQueue');
+    SampleQueueProducer('SampleJob', {
+        name : "Harsh",
+        company: "Microsoft",
+        position: "Intern",
+        location: "Remote | BLR"
+    });
 });

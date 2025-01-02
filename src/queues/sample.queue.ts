@@ -1,5 +1,6 @@
 import { Queue } from "bullmq";
+import redisConnection from "../config/redis.config";
 
-const sampleQueue = new Queue('SampleQueue');
+const SampleQueue = new Queue('SampleQueue', {connection: redisConnection});
 
-export default sampleQueue;
+export default SampleQueue;
