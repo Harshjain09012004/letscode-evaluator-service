@@ -37,3 +37,8 @@ Add the following Scripts in package.json
 ```
 npm run dev
 ```
+
+7. 
+```
+sudo service redis-server restart
+```
