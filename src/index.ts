@@ -22,5 +22,12 @@ app.listen(serverConfig.PORT, ()=>{
         company: "Microsoft",
         position: "Intern",
         location: "Remote | BLR"
-    });
+    }, {priority : 2});
+
+    SampleQueueProducer('SampleJob', {
+        name : "Karl",
+        company: "Linkedin",
+        position: "Intern",
+        location: "Remote | PUNE"
+    }, {priority : 1});
 });

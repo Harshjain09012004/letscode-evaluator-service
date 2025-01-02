@@ -11,7 +11,7 @@ class SampleJob implements IJob{
     }
 
     handle(job?: Job):void{
-        console.log("Job Handler");
+        console.log("Job Handler Kicking");
         console.log(this.payload);
         if(job){
             console.log(job.name, job.id, job.data);
