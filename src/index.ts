@@ -1,10 +1,17 @@
 import express, { Express, Request, Response} from 'express';
+import bodyParser from 'body-parser';
+
 import serverConfig from './config/server.config';
-import apiRouter from './routes';
-import SampleQueueProducer from './producers/sampleQueue.producer';
-import SampleWorker from './workers/sample.worker';
 import serverAdapter from './config/bullboard.config';
+
+import apiRouter from './routes';
+import SampleWorker from './workers/sample.worker';
+
 const app: Express = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.text());
+app.use(bodyParser.urlencoded({extended:true}));
 
 app.get('/', (_:Request, res:Response)=>{
     res.json({
@@ -21,17 +28,4 @@ app.listen(serverConfig.PORT, ()=>{
     console.log('For the Queues UI, open http://localhost:3000/admin/queues');
     
     SampleWorker('SampleQueue');
-    SampleQueueProducer('SampleJob', {
-        name : "Harsh",
-        company: "Microsoft",
-        position: "Intern",
-        location: "Remote | BLR"
-    }, {priority : 2});
-
-    SampleQueueProducer('SampleJob', {
-        name : "Karl",
-        company: "Linkedin",
-        position: "Intern",
-        location: "Remote | PUNE"
-    }, {priority : 1});
 });
