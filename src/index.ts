@@ -6,6 +6,7 @@ import serverAdapter from './config/bullboard.config';
 
 import apiRouter from './routes';
 import SampleWorker from './workers/sample.worker';
+import runPython from './containers/runPythonDocker';
 
 const app: Express = express();
 
@@ -27,5 +28,16 @@ app.listen(serverConfig.PORT, ()=>{
     console.log(`Seriver is Working on Port ${serverConfig.PORT}`);
     console.log('For the Queues UI, open http://localhost:3000/admin/queues');
     
+    const code = `x = input();
+y = input();
+print("value of x is :", x);
+print('value of y is :', y);
+print('Hello');`;
+
+    const inputData = `133
+2023`;
+
+    runPython(code, inputData);
+
     SampleWorker('SampleQueue');
 });
