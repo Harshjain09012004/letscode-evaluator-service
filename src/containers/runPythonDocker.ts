@@ -8,8 +8,8 @@ async function runPython(code : string, inputData : string){
 
     console.log("Initialising a new Python Container");
     
-    //Pull Image if don't exist in docker
-    pullImage(PYTHON_IMAGE);
+    // Pull Image if don't exist in docker
+    await pullImage(PYTHON_IMAGE);
 
     // Below code only allow us to run code not to pass any data
     // -c flag enable to run code from string
@@ -27,7 +27,7 @@ async function runPython(code : string, inputData : string){
     // For starting and booting the python container
     await pythonDockerContainer.start();
 
-    console.log("Started The Docker Container");
+    console.log("Started The Python Docker Container");
 
     const loggerStream = await pythonDockerContainer.logs({
         stdout: true,

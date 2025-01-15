@@ -9,7 +9,7 @@ async function runCpp(code : string, inputData : string){
     console.log("Initialising a new CPP Container");
 
     //Pull Image if don't exist in docker
-    pullImage(CPP_IMAGE);
+    await pullImage(CPP_IMAGE);
 
     
     // Code & InputData should be wrapped inside single quotes
