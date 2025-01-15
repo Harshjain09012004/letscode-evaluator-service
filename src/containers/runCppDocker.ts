@@ -1,35 +1,32 @@
-import { PYTHON_IMAGE } from "../utils/constants";
+import { CPP_IMAGE } from "../utils/constants";
 import createContainer from "./containerFactory";
 import decodeDockerStream from "./dockerHelper";
 import pullImage from "./pullImage";
 
-async function runPython(code : string, inputData : string){
+async function runCpp(code : string, inputData : string){
     const rawLogBuffer : Buffer[] = [];
 
-    console.log("Initialising a new Python Container");
-    
+    console.log("Initialising a new CPP Container");
+
     //Pull Image if don't exist in docker
-    pullImage(PYTHON_IMAGE);
+    pullImage(CPP_IMAGE);
 
-    // Below code only allow us to run code not to pass any data
-    // -c flag enable to run code from string
-    // const pythonDockerContainer = await createContainer(PYTHON_IMAGE,['python3', '-c', code, 'stty -echo']);
-
+    
     // Code & InputData should be wrapped inside single quotes
     // To remove the confusion with single quotes we replace them with double quotes
-    const runCommands = `echo '${code.replace(/'/g, `"`)}' > test.py && echo '${inputData.replace(/'/g, `"`)}' | python3 test.py`;
+    const runCommands = `echo '${code.replace(/'/g, `"`)}' > main.cpp && g++ main.cpp -o main && echo '${inputData.replace(/'/g, `"`)}' | ./main`;
 
     // Below statment allow us to pass inputData while executing the code
     // /bin/sh tells the OS to run the command as bash script rather a normal statement
     // As commands includes echo so it becomes a bash script
-    const pythonDockerContainer = await createContainer(PYTHON_IMAGE,['/bin/sh', '-c', runCommands]);
+    const cppDockerContainer = await createContainer(CPP_IMAGE,['/bin/sh', '-c', runCommands]);
 
     // For starting and booting the python container
-    await pythonDockerContainer.start();
+    await cppDockerContainer.start();
 
     console.log("Started The Docker Container");
 
-    const loggerStream = await pythonDockerContainer.logs({
+    const loggerStream = await cppDockerContainer.logs({
         stdout: true,
         stderr: true,
         follow: true,
@@ -52,10 +49,10 @@ async function runPython(code : string, inputData : string){
 
         console.log(decodedStream);
 
-        await pythonDockerContainer.remove();
+        await cppDockerContainer.remove();
     });
     
-    return pythonDockerContainer;
+    return cppDockerContainer;
 }
 
-export default runPython;
+export default runCpp;

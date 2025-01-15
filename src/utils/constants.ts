@@ -1,8 +1,8 @@
 export const PYTHON_IMAGE = "python:3.8-slim";
 
-export const JAVA_IMAGE = '';
+export const JAVA_IMAGE = 'openjdk:11-jdk-slim';
 
-export const CPP_IMAGE = '';
+export const CPP_IMAGE = 'gcc:latest';
 
 //Header Size of Docker Stream, It Contains Information
 //About Type of Stream and Length of Data in Stream
