@@ -9,7 +9,7 @@ async function runJava(code : string, inputData : string){
     console.log("Initialising a new Java Container");
 
     //Pull Image if don't exist in docker
-    pullImage(JAVA_IMAGE);
+    await pullImage(JAVA_IMAGE);
 
     // Code & InputData should be wrapped inside single quotes
     // To remove the confusion with single quotes we replace them with double quotes
@@ -24,7 +24,7 @@ async function runJava(code : string, inputData : string){
     // For starting and booting the java container
     await javaDockerContainer.start();
 
-    console.log("Started The Docker Container");
+    console.log("Started The Java Docker Container");
 
     const loggerStream = await javaDockerContainer.logs({
         stdout: true,
