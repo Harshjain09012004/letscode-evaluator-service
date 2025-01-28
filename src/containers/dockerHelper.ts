@@ -1,8 +1,9 @@
+import Dockerode from "dockerode";
 import DockerStreamOutput from "../types/dockerStreamOutput";
 
 import { DOCKER_STREAM_HEADER_SIZE } from "../utils/constants";
 
-export default function decodeDockerStream(buffer : Buffer) : DockerStreamOutput{
+export function decodeDockerStream(buffer : Buffer) : DockerStreamOutput{
     //Contain current position in buffer stream while parsing
     let offset = 0; 
 
@@ -29,4 +30,35 @@ export default function decodeDockerStream(buffer : Buffer) : DockerStreamOutput
         offset+=length;
     }
     return output;
+};
+
+export async function bindLoggerToContainer(container : Dockerode.Container, rawLogBuffer : Buffer[]) : Promise<DockerStreamOutput>{
+    const loggerStream = await container.logs({
+        stdout: true,
+        stderr: true,
+        follow: true,
+        timestamps: false
+    });
+
+    loggerStream.on('data', (chunk)=>{
+        rawLogBuffer.push(chunk);
+    });
+
+    loggerStream.on('error', (chunk)=>{
+        console.log(chunk);
+    });
+
+    const codeResponse : DockerStreamOutput = await new Promise((res)=>{
+        loggerStream.on('end', ()=>{
+            console.log(rawLogBuffer);
+
+            const completeBuffer = Buffer.concat(rawLogBuffer);
+            const decodedStream = decodeDockerStream(completeBuffer);
+
+            console.log(decodedStream);
+            res(decodedStream);
+        });
+    });
+
+    return codeResponse;
 };
