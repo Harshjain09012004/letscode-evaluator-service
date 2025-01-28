@@ -1,8 +1,7 @@
 import { Job } from "bullmq";
 import { IJob } from "../types/bullMqJobDefinition";
-import runJava from "../containers/runJavaDocker";
-import runCpp from "../containers/runCppDocker";
-import runPython from "../containers/runPythonDocker";
+import createExecutor from "../utils/executorFactory";
+import DockerStreamOutput from "../types/dockerStreamOutput";
 
 class SubmissionJob implements IJob{
     name : string;
@@ -13,21 +12,26 @@ class SubmissionJob implements IJob{
         this.payload = payload;
     }
 
-    handle(job?: Job):void{
+    async handle(job?: Job){
         console.log("Submission Job Handler Kicking");
         if(job){
-            // const key = Object.keys(this.payload)[0];
             console.log("Payload is :", this.payload);
             console.log("Language is ", this.payload.language);
 
-            if(this.payload.language == 'CPP'){
-                runCpp(this.payload.code, this.payload.inputData);
-            } 
-            else if(this.payload.language == 'PYTHON'){
-                runPython(this.payload.code, this.payload.inputData);
-            } 
-            else if(this.payload.language == 'JAVA'){
-                runJava(this.payload.code, this.payload.inputData);
+            const codeLanguage = this.payload.language;
+            const executorStrategy = createExecutor(codeLanguage);
+
+            if(executorStrategy!=null){
+                const codeResponse : DockerStreamOutput = await executorStrategy.execute(this.payload.code, this.payload.inputData);
+
+                if(codeResponse.stderr){
+                    console.log("Some Error Occured During Execution");
+                    console.log(codeResponse.stderr);
+                }
+                else{
+                    console.log("Code Executed Successfully !");
+                    console.log(codeResponse.stdout);
+                }
             } 
         }
     }
