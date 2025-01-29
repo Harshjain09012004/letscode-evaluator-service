@@ -6,11 +6,12 @@ import { bindLoggerToContainer } from "./dockerHelper";
 import pullImage from "./pullImage";
 
 class CppExecutor implements CodeExecutorStrategy{
-    async execute(code :string, inputData : string) : Promise<DockerStreamOutput>{
+    async execute(code :string, inputData : string, outputData : string) : Promise<DockerStreamOutput>{
         const rawLogBuffer : Buffer[] = [];
 
         console.log("Initialising a new CPP Container");
-
+        console.log(outputData);
+        
         //Pull Image if don't exist in docker
         await pullImage(CPP_IMAGE);
 

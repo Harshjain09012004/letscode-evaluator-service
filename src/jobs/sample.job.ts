@@ -10,7 +10,7 @@ class SampleJob implements IJob{
         this.payload = payload;
     }
 
-    handle(job?: Job):void{
+    async handle(job?: Job): Promise<void>{
         console.log("Job Handler Kicking");
         console.log(this.payload);
         if(job){
