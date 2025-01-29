@@ -4,13 +4,13 @@ import PythonExecutor from "../containers/pythonExecutor";
 import CodeExecutorStrategy from "../types/codeExecutorStrategy";
 
 function createExecutor(codeLanguage : string) : CodeExecutorStrategy | null{
-    if(codeLanguage == 'CPP'){
+    if(codeLanguage.toUpperCase() == 'CPP'){
         return new CppExecutor();
     }
-    else if(codeLanguage == 'JAVA'){
+    else if(codeLanguage.toUpperCase() == 'JAVA'){
         return new JavaExecutor();
     }
-    else if(codeLanguage == 'PYTHON'){
+    else if(codeLanguage.toUpperCase() == 'PYTHON'){
         return new PythonExecutor();
     }
     else{

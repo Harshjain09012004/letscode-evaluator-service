@@ -6,10 +6,11 @@ import { bindLoggerToContainer } from "./dockerHelper";
 import pullImage from "./pullImage";
 
 class PythonExecutor implements CodeExecutorStrategy{
-    async execute(code : string, inputData : string) : Promise<DockerStreamOutput>{
+    async execute(code : string, inputData : string,  outputData : string) : Promise<DockerStreamOutput>{
         const rawLogBuffer : Buffer[] = [];
 
         console.log("Initialising a new Python Container");
+        console.log(outputData);
         
         // Pull Image if don't exist in docker
         await pullImage(PYTHON_IMAGE);
