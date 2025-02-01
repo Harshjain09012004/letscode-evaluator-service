@@ -3,6 +3,7 @@ import { IJob } from "../types/bullMqJobDefinition";
 import createExecutor from "../utils/executorFactory";
 import DockerStreamOutput from "../types/dockerStreamOutput";
 import { SubmissionPayload } from "../types/submissionPayload";
+import EvaluationQueueProducer from "../producers/evaluationQueue.producer";
 
 class SubmissionJob implements IJob{
     name : string;
@@ -31,10 +32,24 @@ class SubmissionJob implements IJob{
                 if(codeResponse.stderr){
                     console.log("Some Error Occured During Execution");
                     console.log(codeResponse.stderr);
+                    EvaluationQueueProducer({
+                        userId : this.payload.userId,
+                        submissionId : this.payload.submissionId,
+                        error : codeResponse.stderr,
+                        data : {},
+                        status : "Error"
+                    });
                 }
                 else{
                     console.log("Code Executed Successfully !");
                     console.log(codeResponse.stdout);
+                    EvaluationQueueProducer({
+                        userId : this.payload.userId,
+                        submissionId : this.payload.submissionId,
+                        error : {},
+                        data : codeResponse.stdout,
+                        status : "Accepted"
+                    });
                 }
             } 
         }
