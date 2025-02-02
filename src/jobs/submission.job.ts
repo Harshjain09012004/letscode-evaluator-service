@@ -4,6 +4,7 @@ import createExecutor from "../utils/executorFactory";
 import DockerStreamOutput from "../types/dockerStreamOutput";
 import { SubmissionPayload } from "../types/submissionPayload";
 import EvaluationQueueProducer from "../producers/evaluationQueue.producer";
+import determineStatus from "../utils/errorStatus";
 
 class SubmissionJob implements IJob{
     name : string;
@@ -37,7 +38,7 @@ class SubmissionJob implements IJob{
                         submissionId : this.payload.submissionId,
                         error : codeResponse.stderr,
                         data : {},
-                        status : "Error"
+                        status : determineStatus(codeResponse.stderr)
                     });
                 }
                 else{
@@ -47,8 +48,8 @@ class SubmissionJob implements IJob{
                         userId : this.payload.userId,
                         submissionId : this.payload.submissionId,
                         error : {},
-                        data : codeResponse.stdout,
-                        status : "Accepted"
+                        data : '',
+                        status : (codeResponse.stdout.trim() === this.payload.outputData.trim() ? "Accepted" : "WA")
                     });
                 }
             } 
