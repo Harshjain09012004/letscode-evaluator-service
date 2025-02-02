@@ -49,7 +49,18 @@ export async function bindLoggerToContainer(container : Dockerode.Container, raw
     });
 
     const codeResponse : DockerStreamOutput = await new Promise((res)=>{
+        //Time Limit Exceeded Handler Timeout
+        const timerId = setTimeout(async () => {
+            await container.stop();
+            res({
+                stdout : "",
+                stderr : "Time Limit Exceeded"
+            });
+        }, 1000);
+
         loggerStream.on('end', ()=>{
+            clearTimeout(timerId);
+
             console.log(rawLogBuffer);
 
             const completeBuffer = Buffer.concat(rawLogBuffer);

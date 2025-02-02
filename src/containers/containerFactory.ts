@@ -10,7 +10,11 @@ async function createContainer(imageName: string, cmdExecutable: string[]){
         AttachStdin : true,
         AttachStdout : true,
         Tty : false,
-        OpenStdin : true
+        OpenStdin : true,
+        HostConfig : {
+            //Handles Memory Limit Exceeded
+            Memory : 1024*1024*1024 //1 GB
+        }
     });
 
     return container;
