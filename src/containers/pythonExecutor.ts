@@ -1,6 +1,6 @@
 import CodeExecutorStrategy from "../types/codeExecutorStrategy";
 import DockerStreamOutput from "../types/dockerStreamOutput";
-import { PYTHON_IMAGE } from "../utils/constants";
+import { PYTHON_IMAGE, PYTHON_TIME_LIMIT } from "../utils/constants";
 import createContainer from "./containerFactory";
 import { bindLoggerToContainer } from "./dockerHelper";
 import pullImage from "./pullImage";
@@ -33,7 +33,7 @@ class PythonExecutor implements CodeExecutorStrategy{
 
         console.log("Started The Python Docker Container");
 
-        const codeResponse = await bindLoggerToContainer(pythonDockerContainer, rawLogBuffer);
+        const codeResponse = await bindLoggerToContainer(pythonDockerContainer, rawLogBuffer, PYTHON_TIME_LIMIT);
 
         await pythonDockerContainer.remove();
 

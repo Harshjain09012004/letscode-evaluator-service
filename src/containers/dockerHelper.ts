@@ -32,7 +32,7 @@ export function decodeDockerStream(buffer : Buffer) : DockerStreamOutput{
     return output;
 };
 
-export async function bindLoggerToContainer(container : Dockerode.Container, rawLogBuffer : Buffer[]) : Promise<DockerStreamOutput>{
+export async function bindLoggerToContainer(container : Dockerode.Container, rawLogBuffer : Buffer[], timeLimit : number) : Promise<DockerStreamOutput>{
     const loggerStream = await container.logs({
         stdout: true,
         stderr: true,
@@ -51,12 +51,12 @@ export async function bindLoggerToContainer(container : Dockerode.Container, raw
     const codeResponse : DockerStreamOutput = await new Promise((res)=>{
         //Time Limit Exceeded Handler Timeout
         const timerId = setTimeout(async () => {
-            await container.stop();
+            await container.kill();
             res({
                 stdout : "",
                 stderr : "Time Limit Exceeded"
             });
-        }, 1000);
+        }, timeLimit);
 
         loggerStream.on('end', ()=>{
             clearTimeout(timerId);

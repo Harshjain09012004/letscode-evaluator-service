@@ -11,3 +11,10 @@ export const SAMPLE_QUEUE = 'SampleQueue';
 //Header Size of Docker Stream, It Contains Information
 //About Type of Stream and Length of Data in Stream
 export const DOCKER_STREAM_HEADER_SIZE = 8;
+
+//Time Limits For Each of the Language
+export const CPP_TIME_LIMIT = 1000;
+
+export const JAVA_TIME_LIMIT = 1000;
+
+export const PYTHON_TIME_LIMIT = 1000;

@@ -1,6 +1,6 @@
 import CodeExecutorStrategy from "../types/codeExecutorStrategy";
 import DockerStreamOutput from "../types/dockerStreamOutput";
-import { JAVA_IMAGE } from "../utils/constants";
+import { JAVA_IMAGE, JAVA_TIME_LIMIT } from "../utils/constants";
 import createContainer from "./containerFactory";
 import { bindLoggerToContainer} from "./dockerHelper";
 import pullImage from "./pullImage";
@@ -30,7 +30,7 @@ class JavaExecutor implements CodeExecutorStrategy{
 
         console.log("Started The Java Docker Container");
 
-        const codeResponse = await bindLoggerToContainer(javaDockerContainer, rawLogBuffer);
+        const codeResponse = await bindLoggerToContainer(javaDockerContainer, rawLogBuffer, JAVA_TIME_LIMIT);
 
         await javaDockerContainer.remove();
         

@@ -29,7 +29,7 @@ app.use('/admin/queues', serverAdapter.getRouter());
 
 app.listen(serverConfig.PORT, ()=>{
     console.log(`Seriver is Working on Port ${serverConfig.PORT}`);
-    console.log('For the Queues UI, open http://localhost:3000/admin/queues');
+    console.log(`For the Queues UI, open http://localhost:${serverConfig.PORT}/admin/queues`);
 
     SampleWorker(SAMPLE_QUEUE);
     SubmissionWorker(SUBMISSION_QUEUE);

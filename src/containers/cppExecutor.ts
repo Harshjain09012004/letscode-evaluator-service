@@ -1,6 +1,6 @@
 import CodeExecutorStrategy from "../types/codeExecutorStrategy";
 import DockerStreamOutput from "../types/dockerStreamOutput";
-import { CPP_IMAGE } from "../utils/constants";
+import { CPP_IMAGE, CPP_TIME_LIMIT } from "../utils/constants";
 import createContainer from "./containerFactory";
 import { bindLoggerToContainer } from "./dockerHelper";
 import pullImage from "./pullImage";
@@ -30,7 +30,7 @@ class CppExecutor implements CodeExecutorStrategy{
 
         console.log("Started CPP The Docker Container");
 
-        const codeResponse = await bindLoggerToContainer(cppDockerContainer, rawLogBuffer);
+        const codeResponse = await bindLoggerToContainer(cppDockerContainer, rawLogBuffer, CPP_TIME_LIMIT);
 
         await cppDockerContainer.remove();
 
